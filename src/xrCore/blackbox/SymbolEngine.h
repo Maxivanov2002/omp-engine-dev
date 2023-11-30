@@ -295,7 +295,7 @@ public      :
     {
         return ( ::SymGetSymFromAddr ( m_hProcess       ,
                                        dwAddr           ,
-                                       pdwDisplacement  ,
+                                      (DWORD_PTR*) pdwDisplacement  ,
                                        Symbol            ) ) ;
     }
 
@@ -426,7 +426,7 @@ public      :
     {
         return ( ::SymRegisterCallback ( m_hProcess         ,
                                          CallbackFunction   ,
-                                         UserContext         ) ) ;
+            (ULONG) UserContext         ) ) ;
     }
 
 

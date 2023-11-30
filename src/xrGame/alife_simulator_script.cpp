@@ -19,6 +19,7 @@
 #include "alife_registry_container.h"
 #include "xrServer.h"
 #include "level.h"
+#include "actor_mp_client.h"
 
 using namespace luabind;
 
@@ -171,12 +172,13 @@ CSE_Abstract *CALifeSimulator__spawn_item2		(CALifeSimulator *self, LPCSTR secti
 		return							(self->spawn_item(section,position,level_vertex_id,game_vertex_id,id_parent));
 
 	CSE_ALifeDynamicObject				*object = ai().alife().objects().object(id_parent,true);
-	if (!object) {
+	if (!object && !smart_cast<CActorMP*>(Level().Objects.net_Find(id_parent)))
+	{
 		Msg								("! invalid parent id [%d] specified",id_parent);
 		return							(0);
 	}
 
-	if (!object->m_bOnline)
+	if (object && !object->m_bOnline)
 		return							(self->spawn_item(section,position,level_vertex_id,game_vertex_id,id_parent));
 
 	NET_Packet							packet;
@@ -373,10 +375,10 @@ void CALifeSimulator::script_register			(lua_State *L)
 
 		STORY_PAIRS::const_iterator	I = story_ids.begin();
 		STORY_PAIRS::const_iterator	E = story_ids.end();
-		for ( ; I != E; ++I)
-			instance.enum_		("_story_ids")[luabind::value(*(*I).first,(*I).second)];
+		for (; I != E; ++I)
+			instance = std::move(instance).enum_("_story_ids")[luabind::value(*(*I).first, (*I).second)];
 
-		luabind::module			(L)[instance];
+		luabind::module(L)[std::move(instance)];
 	}
 
 	{
@@ -395,10 +397,10 @@ void CALifeSimulator::script_register			(lua_State *L)
 
 		SPAWN_STORY_PAIRS::const_iterator	I = spawn_story_ids.begin();
 		SPAWN_STORY_PAIRS::const_iterator	E = spawn_story_ids.end();
-		for ( ; I != E; ++I)
-			instance.enum_		("_spawn_story_ids")[luabind::value(*(*I).first,(*I).second)];
+		for (; I != E; ++I)
+			instance = std::move(instance).enum_("_spawn_story_ids")[luabind::value(*(*I).first, (*I).second)];
 
-		luabind::module			(L)[instance];
+		luabind::module(L)[std::move(instance)];
 	}
 }
 

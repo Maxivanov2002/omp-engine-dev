@@ -453,7 +453,7 @@ LPCTSTR __stdcall GetFaultReason ( EXCEPTION_POINTERS * pExPtrs )
         pSym->SizeOfStruct = sizeof ( IMAGEHLP_SYMBOL ) ;
         pSym->MaxNameLength = SYM_BUFF_SIZE - sizeof ( IMAGEHLP_SYMBOL);
 
-        DWORD dwDisp ;
+        DWORD_PTR dwDisp ;
         if ( TRUE ==
               SymGetSymFromAddr ( (HANDLE)GetCurrentProcessId ( )     ,
                                   (DWORD)pExPtrs->ExceptionRecord->
@@ -509,13 +509,15 @@ LPCTSTR __stdcall GetFaultReason ( EXCEPTION_POINTERS * pExPtrs )
         ZeroMemory ( &g_stLine , sizeof ( IMAGEHLP_LINE ) ) ;
         g_stLine.SizeOfStruct = sizeof ( IMAGEHLP_LINE ) ;
 
+        DWORD dwDisp_;
+
         if ( TRUE ==
               InternalSymGetLineFromAddr ((HANDLE)
                                             GetCurrentProcessId ( )    ,
                                           (DWORD)pExPtrs->
                                                     ExceptionRecord->
                                                       ExceptionAddress ,
-                                          &dwDisp                      ,
+                                          &dwDisp_,
                                           &g_stLine                   ))
         {
             iCurr += wsprintf ( g_szBuff + iCurr , _T ( ", " ) ) ;
@@ -607,24 +609,33 @@ LPCTSTR  __stdcall
     ZeroMemory ( &g_stFrame , sizeof ( STACKFRAME ) ) ;
 
     #ifdef _X86_
-    g_stFrame.AddrPC.Offset       = pExPtrs->ContextRecord->Eip ;
-    g_stFrame.AddrPC.Mode         = AddrModeFlat                ;
-    g_stFrame.AddrStack.Offset    = pExPtrs->ContextRecord->Esp ;
-    g_stFrame.AddrStack.Mode      = AddrModeFlat                ;
-    g_stFrame.AddrFrame.Offset    = pExPtrs->ContextRecord->Ebp ;
-    g_stFrame.AddrFrame.Mode      = AddrModeFlat                ;
+        g_stFrame.AddrPC.Offset       = pExPtrs->ContextRecord->Eip ;
+        g_stFrame.AddrPC.Mode         = AddrModeFlat                ;
+        g_stFrame.AddrStack.Offset    = pExPtrs->ContextRecord->Esp ;
+        g_stFrame.AddrStack.Mode      = AddrModeFlat                ;
+        g_stFrame.AddrFrame.Offset    = pExPtrs->ContextRecord->Ebp ;
+        g_stFrame.AddrFrame.Mode      = AddrModeFlat                ;
+   
+    #elif _M_X64
+        g_stFrame.AddrPC.Offset = pExPtrs->ContextRecord->Rip;
+        g_stFrame.AddrPC.Mode = AddrModeFlat;
+        g_stFrame.AddrStack.Offset = pExPtrs->ContextRecord->Rsp;
+        g_stFrame.AddrStack.Mode = AddrModeFlat;
+        g_stFrame.AddrFrame.Offset = pExPtrs->ContextRecord->Rbp;
+        g_stFrame.AddrFrame.Mode = AddrModeFlat;
+
     #else
-    g_stFrame.AddrPC.Offset       = (DWORD)pExPtrs->ContextRecord->Fir ;
-    g_stFrame.AddrPC.Mode         = AddrModeFlat ;
-    g_stFrame.AddrReturn.Offset   =
-                                   (DWORD)pExPtrs->ContextRecord->IntRa;
-    g_stFrame.AddrReturn.Mode     = AddrModeFlat ;
-    g_stFrame.AddrStack.Offset    =
-                                   (DWORD)pExPtrs->ContextRecord->IntSp;
-    g_stFrame.AddrStack.Mode      = AddrModeFlat ;
-    g_stFrame.AddrFrame.Offset    =
-                                   (DWORD)pExPtrs->ContextRecord->IntFp;
-    g_stFrame.AddrFrame.Mode      = AddrModeFlat ;
+        g_stFrame.AddrPC.Offset       = (DWORD)pExPtrs->ContextRecord->Fir ;
+        g_stFrame.AddrPC.Mode         = AddrModeFlat ;
+        g_stFrame.AddrReturn.Offset   =
+                                       (DWORD)pExPtrs->ContextRecord->IntRa;
+        g_stFrame.AddrReturn.Mode     = AddrModeFlat ;
+        g_stFrame.AddrStack.Offset    =
+                                       (DWORD)pExPtrs->ContextRecord->IntSp;
+        g_stFrame.AddrStack.Mode      = AddrModeFlat ;
+        g_stFrame.AddrFrame.Offset    =
+                                       (DWORD)pExPtrs->ContextRecord->IntFp;
+        g_stFrame.AddrFrame.Mode      = AddrModeFlat ;
     #endif
 
     return ( InternalGetStackTraceString ( dwOpts , pExPtrs ) ) ;
@@ -650,7 +661,7 @@ BOOL __stdcall CH_ReadProcessMemory ( HANDLE                      ,
                                  lpBaseAddress         ,
                                  lpBuffer              ,
                                  nSize                 ,
-                                 lpNumberOfBytesRead    ) ) ;
+                                 (SIZE_T*) lpNumberOfBytesRead    ) ) ;
 }
 
 // The internal function that does all the stack walking
@@ -756,7 +767,7 @@ LPCTSTR __stdcall
         }
 
         ASSERT ( iCurr < ( BUFF_SIZE - MAX_PATH ) ) ;
-        DWORD dwDisp ;
+        DWORD_PTR dwDisp ;
 
         // Output the symbol name?
         if ( GSTSO_SYMBOL == ( dwOpts & GSTSO_SYMBOL ) )
@@ -818,6 +829,8 @@ LPCTSTR __stdcall
 
         ASSERT ( iCurr < ( BUFF_SIZE - MAX_PATH ) ) ;
 
+
+        DWORD dwDisp_;
         // Output the source file and line number information?
         if ( GSTSO_SRCLINE == ( dwOpts & GSTSO_SRCLINE ) )
         {
@@ -828,7 +841,7 @@ LPCTSTR __stdcall
                    InternalSymGetLineFromAddr ( (HANDLE)
                                                   GetCurrentProcessId(),
                                                 g_stFrame.AddrPC.Offset,
-                                                &dwDisp                ,
+                                                &dwDisp_,
                                                 &g_stLine             ))
             {
                 iCurr += wsprintf ( g_szBuff + iCurr , _T ( ", " ) ) ;

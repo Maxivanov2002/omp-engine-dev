@@ -65,13 +65,14 @@ void	xrMemory::_initialize	(BOOL bDebug)
 	stat_calls				= 0;
 	stat_counter			= 0;
 
-	u32	features		= CPU::ID.feature;
-	if (features & _CPU_FEATURE_MMX)
+ 	if (CPU::ID.hasFeature(CPUFeature::MMX))
 	{
 		mem_copy	= xrMemCopy_MMX;
 		mem_fill	= xrMemFill_x86;
 		mem_fill32	= xrMemFill32_MMX;
-	} else {
+	} 
+	else 
+	{
 		mem_copy	= xrMemCopy_x86;
 		mem_fill	= xrMemFill_x86;
 		mem_fill32	= xrMemFill32_x86;
@@ -81,7 +82,7 @@ void	xrMemory::_initialize	(BOOL bDebug)
 	if (!strstr(Core.Params,"-pure_alloc")) {
 		// initialize POOLs
 		u32	element		= mem_pools_ebase;
-		u32 sector		= mem_pools_ebase*1024;
+		u32 sector		= mem_pools_ebase*4096;
 		for (u32 pid=0; pid<mem_pools_count; pid++)
 		{
 			mem_pools[pid]._initialize(element,sector,0x1);
