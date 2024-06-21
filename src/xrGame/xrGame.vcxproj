@@ -1139,6 +1139,7 @@
     <ClInclude Include="cover_point_inline.h" />
     <ClInclude Include="cta_game_artefact.h" />
     <ClInclude Include="cta_game_artefact_activation.h" />
+    <ClInclude Include="GameCraft.h" />
     <ClInclude Include="game_cl_roleplay.h" />
     <ClInclude Include="game_sv_roleplay.h" />
     <ClInclude Include="InertionData.h" />
@@ -3960,10 +3961,11 @@
     </ClCompile>
     <ClCompile Include="cta_game_artefact.cpp" />
     <ClCompile Include="cta_game_artefact_activation.cpp" />
-	    <ClCompile Include="game_cl_freemp_messages.cpp" />
+    <ClCompile Include="GameCraft.cpp" />
+    <ClCompile Include="game_cl_freemp_messages.cpp" />
     <ClCompile Include="game_cl_roleplay.cpp" />
     <ClCompile Include="game_sv_freemp_trade.cpp" />
-	    <ClCompile Include="game_sv_freemp_upgrade_and_repair.cpp" />
+    <ClCompile Include="game_sv_freemp_upgrade_and_repair.cpp" />
     <ClCompile Include="game_sv_roleplay.cpp" />
     <ClCompile Include="game_sv_roleplay_drop_items.cpp" />
     <ClCompile Include="net_physics_state.cpp" />

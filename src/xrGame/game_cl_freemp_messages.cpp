@@ -2,6 +2,7 @@
 #include "game_cl_freemp.h"
 #include "UIGameFMP.h"
 #include "ui/UIActorMenu.h"
+#include "GameCraft.h"
 
 void game_cl_freemp::TranslateGameMessage(u32 msg, NET_Packet& P)
 {
@@ -39,6 +40,15 @@ void game_cl_freemp::TranslateGameMessage(u32 msg, NET_Packet& P)
 				}
 			}
 		}break;
+	case GE_CRAFT_ITEM:
+	{
+		if (!g_dedicated_server)
+		{
+			CUIGameFMP* fmp = smart_cast<CUIGameFMP*>(m_game_ui);
+			fmp->getCraftMenu()->ReciveResult(P);
+		}
+	}
+	break;
 	default:
 		inherited::TranslateGameMessage(msg, P);
 	};

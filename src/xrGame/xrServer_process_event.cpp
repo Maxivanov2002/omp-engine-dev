@@ -11,6 +11,9 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "Level.h"
 
+#include "Inventory.h"
+#include <game_sv_freemp.h>
+
 void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 {
 #	ifdef SLOW_VERIFY_ENTITIES
@@ -380,6 +383,14 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			SendPlayersInfo(sender);
 		}break;
+
+	case GE_CRAFT_ITEM:
+	{
+		game_sv_freemp* freemp = smart_cast<game_sv_freemp*>(game);
+		if (freemp)
+			freemp->CraftItem(P, sender);
+	}break;
+
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

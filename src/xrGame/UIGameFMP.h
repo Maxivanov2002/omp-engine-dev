@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UIGameMP.h"
+#include "GameCraft.h"
 
 class game_cl_freemp;
 class CUITextWnd;
@@ -13,6 +14,7 @@ private:
 
 protected:
 	CUITextWnd*			m_stats;
+	CUIGameCraft* craft_menu;
 
 public:
 				CUIGameFMP();
@@ -25,6 +27,8 @@ public:
 	virtual void HideShownDialogs();
 
 	virtual void	_BCL OnFrame();
+
+	CUIGameCraft* getCraftMenu() { return craft_menu; };
 
 	virtual bool IR_UIOnKeyboardPress(int dik);
 };

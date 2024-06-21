@@ -15,6 +15,7 @@ BOOL g_cl_draw_mp_statistic = FALSE;
 CUIGameFMP::CUIGameFMP()
 {
 	m_game = NULL;
+	craft_menu = NULL;
 }
 
 CUIGameFMP::~CUIGameFMP()
@@ -48,6 +49,11 @@ void CUIGameFMP::Init(int stage)
 		inherited::Init(stage);
 		m_window->AttachChild(m_stats);
 	}
+
+	craft_menu = xr_new<CUIGameCraft>();
+	craft_menu->Show(false);
+
+	m_window->AttachChild(craft_menu);
 }
 
 void CUIGameFMP::SetClGame(game_cl_GameState * g)
@@ -159,6 +165,12 @@ bool CUIGameFMP::IR_UIOnKeyboardPress(int dik)
 			if (!pActor->inventory_disabled())
 				ShowActorMenu();			
 		} break;
+	case kCraftMode:
+	{
+		if (!craft_menu->IsShown())
+			craft_menu->ShowDialog(true);
+	}
+	break;
 	default:
 		break;
 	}

@@ -1,0 +1,157 @@
+class "ui_test_gui" (CUIScriptWnd)
+
+function ui_test_gui:__init(owner) super()
+         self.owner = owner
+         self:InitControls()
+         self:InitCallBacks()
+end
+
+function ui_test_gui:__finalize()
+end
+
+function ui_test_gui:InitControls()
+self:SetWndRect   (Frect():set(0,0,1024,768))
+local xml, ctrl   = CScriptXmlInit(), CUIWindow()
+xml:ParseFile   ("ui_gui_craft_electronics.xml")
+self.main_panel    = xml:InitStatic("test_gui",self)
+xml:InitStatic ("test_gui:test_gui_text",self.main_panel)
+
+
+self.button_craft_8 = xml:Init3tButton ("test_gui:btn_craft_8",self.main_panel)
+self:Register (self.button_craft_8, "button_craft_8")
+self.button_craft_8:Enable(false)
+
+
+self.button_craft_9 = xml:Init3tButton ("test_gui:btn_craft_9",self.main_panel)
+self:Register (self.button_craft_9, "button_craft_9")
+self.button_craft_9:Enable(false)
+
+
+
+
+self.button_materials = xml:Init3tButton ("test_gui:btn_materials",self.main_panel)
+self:Register (self.button_materials, "button_materials")
+
+self.button_ammo = xml:Init3tButton ("test_gui:btn_ammo",self.main_panel)
+self:Register (self.button_ammo, "button_ammo")
+
+self.button_electronics = xml:Init3tButton ("test_gui:btn_electronics",self.main_panel)
+self:Register (self.button_electronics, "button_electronics")
+
+self.button_medical = xml:Init3tButton ("test_gui:btn_medical",self.main_panel)
+self:Register (self.button_medical, "button_medical")
+
+self.button_food = xml:Init3tButton ("test_gui:btn_food",self.main_panel)
+self:Register (self.button_food, "button_food")
+
+self.button_patrons = xml:Init3tButton ("test_gui:btn_patrons",self.main_panel)
+self:Register (self.button_patrons, "button_patrons")
+
+
+
+self.button_exit = xml:Init3tButton ("test_gui:btn_exit",self.main_panel)
+self:Register (self.button_exit, "button_exit")
+self.lampochkacraftmedkit = xml:InitStatic("test_gui:static_lamp", self.main_panel)
+self.lampochkacraftmedkit_army = xml:InitStatic("test_gui:static_lamp1", self.main_panel)
+
+if ((db.mp_actor:object("textolite") ~= nil) and (db.mp_actor:object("izolenta") ~= nil) and (db.mp_actor:object("condensator") ~= nil)) then
+self.button_craft_8:Enable(true)
+end
+
+if ((db.mp_actor:object("condensator") ~= nil) and (db.mp_actor:object("mednaya_katushka") ~= nil) and (db.mp_actor:object("plastmassa") ~= nil)) then
+self.button_craft_9:Enable(true)
+end
+
+
+end
+
+function ui_test_gui:InitCallBacks()
+         --craftsitems
+         self:AddCallback("button_exit", ui_events.BUTTON_CLICKED, self.OnButton_exit_clicked, self)
+		 self:AddCallback("button_craft_8", ui_events.BUTTON_CLICKED, self.OnButton_craft8_clicked, self)
+		 self:AddCallback("button_craft_9", ui_events.BUTTON_CLICKED, self.OnButton_craft9_clicked, self)
+		 --type
+		 self:AddCallback("button_materials", ui_events.BUTTON_CLICKED, self.OnButton_materials_clicked, self)
+		 self:AddCallback("button_ammo", ui_events.BUTTON_CLICKED, self.OnButton_ammo_clicked, self)
+		 self:AddCallback("button_electronics", ui_events.BUTTON_CLICKED, self.OnButton_electronics_clicked, self)
+		 self:AddCallback("button_medical", ui_events.BUTTON_CLICKED, self.OnButton_medical_clicked, self)
+		 self:AddCallback("button_food", ui_events.BUTTON_CLICKED, self.OnButton_food_clicked, self)
+	     self:AddCallback("button_patrons", ui_events.BUTTON_CLICKED, self.OnButton_patrons_clicked, self)
+end
+
+-------кнопки режим крафта------
+function ui_test_gui:OnButton_materials_clicked()
+	self:HideDialog()
+	xr_effects.run_gui_effects()
+end
+
+function ui_test_gui:OnButton_ammo_clicked()
+	self:HideDialog()
+	xr_effects.run_gui_craft_ammo()
+end
+
+function ui_test_gui:OnButton_electronics_clicked()
+	self:HideDialog()
+	xr_effects.run_gui_craft_electronics()
+end
+
+function ui_test_gui:OnButton_medical_clicked()
+	self:HideDialog()
+	xr_effects.run_gui_craft_medical()
+end
+
+function ui_test_gui:OnButton_food_clicked()
+	self:HideDialog()
+	xr_effects.run_gui_craft_food()
+end
+
+function ui_test_gui:OnButton_patrons_clicked()
+	self:HideDialog()
+	xr_effects.run_gui_craft_patrons()
+end
+-------кнопки------
+
+function ui_test_gui:OnButton_craft9_clicked()
+    local packet = mp_events.gen_event('CRAFT_MEDVED')
+	packet:w_u16(db.mp_actor:id())
+    mp_events.send_to_server(packet)
+    self:OnKeyboard()
+	self:HideDialog()
+			release_items.delete_plastmassa()	
+		    release_items.delete_mednaya_katushka()	
+			release_items.delete_condensator()	
+end
+
+function ui_test_gui:OnButton_craft8_clicked()
+    local packet = mp_events.gen_event('CRAFT_OTKLIK')
+	packet:w_u16(db.mp_actor:id())
+    mp_events.send_to_server(packet)
+    self:OnKeyboard()
+	self:HideDialog()
+			release_items.delete_textolite()	
+		    release_items.delete_mednaya_katushka()	
+			release_items.delete_condensator()	
+end
+
+
+function ui_test_gui:OnButton_exit_clicked()
+        self:HideDialog()
+end
+
+function ui_test_gui:OnKeyboard(dik,keyboard_action)
+           CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+           if keyboard_action == ui_events.WINDOW_KEY_PRESSED then
+              if dik == DIK_keys.DIK_ESCAPE then
+               self:HideDialog()
+              end
+			  
+			  			  if dik == DIK_keys.DIK_Z then
+               self:HideDialog()
+              end
+           end
+           return true
+end
+
+function run_ui_test_gui(folder)
+         folder:ShowDialog(true)
+end
