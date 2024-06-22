@@ -1,0 +1,134 @@
+<w>
+	<craft_menu_frame x="8" y="20" width="373" height="768">
+	    <auto_static x="0" y="0" width="373" height="700" stretch="1">
+		    <texture>wof_ui_pda</texture>
+	    </auto_static>
+ 	</craft_menu_frame>
+	
+	<craft_menu_frame_craft x="25" y="183" width="335" height="450">
+		<texture>ui_inGame2_pda_buttons_background</texture>
+	</craft_menu_frame_craft>
+
+	
+	<!-- START BUTTONS-->
+			
+	<craft_menu_exit_btn x="37" y="660" width="120" height="20" accel="kESCAPE">
+		<text font="letterica16" r="200" g="200" b="200" align="c">button_exist_text</text>
+		<texture>ui_inGame2_Mp_bigbuttone</texture>
+						<text_color>
+				<e r="200" g="200" b="200"/>
+                <t r="0" g="139" b="139"/>
+                <d r="0" g="209" b="0"/>
+                <h r="72" g="209" b="204"/>
+				</text_color>
+	</craft_menu_exit_btn>
+	
+	<craft_menulistbox x="20" y="180" width="335" height="420" complex_mode="0"/>
+	
+	<craft_menu_craft_btn x="220" y="660" width="120" height="20">
+		<text font="letterica16" r="200" g="0" b="0" align="c">sozdat</text>
+		<texture>ui_inGame2_Mp_bigbuttone</texture>
+						<text_color>
+				<e r="200" g="200" b="200"/>
+                <t r="0" g="139" b="139"/>
+                <d r="0" g="209" b="0"/>
+                <h r="72" g="209" b="204"/>
+				</text_color>
+	</craft_menu_craft_btn>	
+ 
+	<!-- CRAFT ZONE -->	 
+	<craft_menu_info x="100" y="45" width="0" height="0">
+			<text align="l" font="letterica16" r="255" g="255" b="255"/> 
+	</craft_menu_info>
+		
+	<craft_menutab x="20" y="120" width="300" height="120">
+		<button x="80" y="0" width="50" height="27" id="eptMedic" hint="" frame_mode="0">
+			<text align="c" vert_align="c" x="0" y="0" width="157" height="27" font="letterica16">button_medical</text>
+			<texture></texture>
+			<text_color>
+				<e r="200" g="200" b="200"/>
+                <t r="255" g="140" b="0"/>
+                <d r="0" g="209" b="0"/>
+                <h r="255" g="140" b="0"/>
+			</text_color>
+		</button>
+		
+		<button x="135" y="0" width="50" height="27" id="eptMaterial" hint="" frame_mode="0">
+			<text align="c" vert_align="c" x="0" y="0" width="157" height="27" font="letterica16">button_materials</text>
+			<texture></texture>
+			<text_color>
+				<e r="200" g="200" b="200"/>
+                <t r="255" g="140" b="0"/>
+                <d r="0" g="209" b="0"/>
+                <h r="255" g="140" b="0"/>
+			</text_color>
+		</button>
+				
+		<button x="195" y="0" width="50" height="27" id="eptElectronic" hint="" frame_mode="0">
+			<text align="c" vert_align="c" x="0" y="0" width="157" height="27" font="letterica16">button_electronics</text>
+			<texture></texture>
+			<text_color>
+				<e r="200" g="200" b="200"/>
+                <t r="255" g="140" b="0"/>
+                <d r="0" g="209" b="0"/>
+                <h r="255" g="140" b="0"/>
+			</text_color>
+		</button>
+				
+		<button x="80" y="27" width="50" height="27" id="eptFood" hint="" frame_mode="0">
+			<text align="c" vert_align="c" x="0" y="0" width="157" height="27" font="letterica16">button_food</text>
+			<texture></texture>
+			<text_color>
+				<e r="200" g="200" b="200"/>
+                <t r="255" g="140" b="0"/>
+                <d r="0" g="209" b="0"/>
+                <h r="255" g="140" b="0"/>
+			</text_color>
+		</button>
+		
+				
+		<button x="135" y="27" width="50" height="27" id="eptAmmo" hint="" frame_mode="0">
+			<text align="c" vert_align="c" x="0" y="0" width="157" height="27" font="letterica16">button_patrons</text>
+			<texture></texture>
+			<text_color>
+				<e r="200" g="200" b="200"/>
+                <t r="255" g="140" b="0"/>
+                <d r="0" g="209" b="0"/>
+                <h r="255" g="140" b="0"/>
+			</text_color>
+		</button>
+		 		
+		<button x="185" y="27" width="50" height="27" id="eptOutfits" hint="" frame_mode="0">
+			<text align="c" vert_align="c" x="0" y="0" width="157" height="27" font="letterica16">button_ammo</text>
+			<texture></texture>
+			<text_color>
+				<e r="200" g="200" b="200"/>
+                <t r="255" g="140" b="0"/>
+                <d r="0" g="209" b="0"/>
+                <h r="255" g="140" b="0"/>
+			</text_color>
+		</button>
+	</craft_menutab>
+ 
+	
+	<static_craft_item_1 x="30" 	y="10" width="30" height="35" stretch="1"/> 
+	<static_craft_item_2 x="70" 	y="10" width="30" height="35" stretch="1"/> 
+	<static_craft_item_3 x="110" 	y="10" width="30" height="35" stretch="1"/> 
+	<static_craft_item_4 x="150" 	y="10" width="30" height="35" stretch="1"/> 
+	<static_craft_item_5 x="190" 	y="10" width="30" height="35" stretch="1"/> 
+	<static_craft_item_6 x="230" 	y="10" width="30" height="35" stretch="1"/> 
+	<static_craft_item_7 x="270" 	y="10" width="30" height="35" stretch="1"/> 
+    <!-- RESULT -->
+	<static_craft_item_8 x="250" 	y="10" width="30" height="35" stretch="1"/> 
+	
+	
+	
+	<static_window_craft x="0" 	y="0" width="300" height="44"/> 
+
+
+	<static_text_craft_result x="310" y="0" width="32" height="16">
+		<text align="l" font="letterica16" r="255" g="255" b="255"/> 
+	</static_text_craft_result>
+	
+	
+</w>
